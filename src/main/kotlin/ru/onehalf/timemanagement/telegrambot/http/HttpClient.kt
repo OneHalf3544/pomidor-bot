@@ -15,21 +15,30 @@ class HttpClient {
 
     private val httpClient: OkHttpClient = OkHttpClient.Builder()
             .readTimeout(5, TimeUnit.SECONDS)
+            .connectTimeout(5, TimeUnit.SECONDS)
             .build()
 
 
     fun execute(url: String, jsonBody: String): String {
-        log.info("execute call: url={}, body={}", url, jsonBody)
+        if (log.isDebugEnabled) {
+            log.debug("execute call: url={}, body={}", url, jsonBody)
+        } else {
+            log.info("execute call: url={}", url)
+        }
+
         val result = httpClient.newCall(Request.Builder()
                 .url(url)
                 .post(RequestBody.create(MediaType.parse("application/json"), jsonBody))
                 .build())
                 .execute()
 
-        val body = result
-                .body()?.string()
+        val body = result.body()?.string()
 
-        log.info("http call result: {}, {}", result, body)
+        if (log.isDebugEnabled) {
+            log.debug("http call result: {}, {}", result, body)
+        } else {
+            log.info("http call finished: {}", url)
+        }
 
         return body?:"";
     }
