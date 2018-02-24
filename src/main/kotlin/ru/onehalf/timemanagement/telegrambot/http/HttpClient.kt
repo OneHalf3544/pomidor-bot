@@ -14,7 +14,7 @@ class HttpClient {
     private val log = LoggerFactory.getLogger(HttpClient::class.java)
 
     private val httpClient: OkHttpClient = OkHttpClient.Builder()
-            .readTimeout(5, TimeUnit.SECONDS)
+            .readTimeout(65, TimeUnit.SECONDS)
             .connectTimeout(5, TimeUnit.SECONDS)
             .build()
 
