@@ -33,7 +33,7 @@ class Update(var update_id: Long = 0,
 
 
 @Component
-class TelegramClient(private val httpClient: HttpClient) {
+open class TelegramClient(private val httpClient: HttpClient) {
 
     private val token: String = "530998288:AAGdfM6NyRkhTAuku2ViCZRLWi8t4U48ZaI"
 
@@ -45,13 +45,12 @@ class TelegramClient(private val httpClient: HttpClient) {
                     {
                         "offset": $offset,
                         "limit": 100,
-                        "timeout": 4,
+                        "timeout": 60,
                         "allowed_updates": []
                     }
                     """.trimIndent())
         return objectMapper.readValue(body, GetUpdatesResponse::class.java)
     }
-
     fun sendMessage(chatId: Long, text: String, replyTo: Long?) {
         httpClient.execute(botApiUrl("sendMessage"), """
                     {
